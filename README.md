@@ -1,12 +1,13 @@
 # BMW Coreutils
 There are a couple main goals of this repository. I want to provide an implementation of at least libc and libm written
-entirely in rust. This must be done carefully because rust itself depends on those libraries. Our versions will probably
-have to be I am not yet entirely sure how to confirm if a Rust binary or C library has been linked to the system libc or
-my own. I have also tentatively put in libresolv, libiconv, and libSystem for testing purposes. While I do wish to
-remove as much dependence on C as possible, libresolv and libiconv are not part of the C standard library so they are
-less important. libSystem is a part of macOS's system library. I am not planning to replace system libraries such as
-libSystem for macOS or the various Windows DLLs. The issue is that on macOS, libSystem also contains the rest of the C
-standard library and I don't want to accidentally include that.
+entirely in rust (and likely some inline assembly on some platforms). This must be done carefully because rust itself
+depends on those libraries. Our versions will probably have to be I am not yet entirely sure how to confirm if a Rust
+binary or C library has been linked to the system libc or my own. I have also tentatively put in libresolv, libiconv,
+and libSystem for testing purposes. While I do wish to remove as much dependence on C as possible, libresolv and
+libiconv are not part of the C standard library so they are less important. libSystem is a part of macOS's system
+library. I am not planning to replace system libraries such as libSystem for macOS or the various Windows DLLs. The
+issue is that on macOS, libSystem also contains the rest of the C standard library and I don't want to accidentally
+include that.
 
 Eventually, I want to make it so that these libraries can be included as regular Rust libraries (with extra
 functionality) as well as compiled to native C libraries. This is possible already since the symbols from our libraries
@@ -15,6 +16,15 @@ though so in order to insure they are not included, I use a custom build script 
 link them in with higher priority. You are free to include them yourself but you won't get any extra features for now.
 If you want to use these libraries directly, I recommend using the libc crate. This means that you can add bmwc as an
 optional dependency which will replace the C libraries that the libc crate links to when selected.
+
+I do acknowledge that RIIR (Rewrite It In Rust) is a bit of a joke these days. While I think I do have some good ideas
+for actual improvements, a simple port of these libraries and utilities to rust is not useful to the community though it
+is useful for my own education. On the note of licensing, I am not a lawyer but I do believe that with the current
+license, I would not be able to use any code from GNU Coreutils. I am not planning to but I wanted to note that while I
+have done a cursory glance at the implementation of a couple of their utilities in the past, I don't remember much. I
+will be keeping all of my code original and not looking at any of their code in the future. I will also be sticking to
+using the official POSIX docs for determining the requirements for each utility. Extending the utilities to allow GNU
+flags may be possible in the future.
 
 Just one more note, if you wish to install one of these binaries, use `cargo install bmw_coreutils --bin [UTILITY]`.
 Otherwise you will install all of them which you may not want. Once the library is done enough that it can compile, the
@@ -71,6 +81,10 @@ library will be used by default. To disable this, you can add the `--no-default-
   do this) runs a program multiple times, it will only be loaded once and simply be given the arguments. I would also
   want to allow the shell to optionally have some more JQ-like interactions. The most basic would be piping output to
   multiple other programs.
+  
+* When building on Windows, I would like to eventually support fast pipes just in case anyone ever makes a full terminal
+  out of Casey Muratori's [RefTerm](https://github.com/cmuratori/refterm). Perhaps we will be the ones who build this
+  full terminal (porting to Rust of course).
   
 ## Implemented utilities
 * echo
