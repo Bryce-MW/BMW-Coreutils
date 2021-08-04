@@ -1,0 +1,15 @@
+cargo-features = ["edition2021"]
+
+[package]
+name = "bmwc"
+version = "0.1.0"
+edition = "2021"
+build = "src/build.rs"
+links = "c, m, resolv, iconv"
+
+[build-dependencies]
+cargo-clone = "0.1.4"
+cargo = "0.40.0"
+
+[dependencies]
+jemallocator = "0.3.0"

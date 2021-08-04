@@ -1,0 +1,12 @@
+cargo-features = ["edition2021"]
+
+[package]
+name = "bmwlibiconv"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "iconv"
+crate-type = ["staticlib"]
+
+[dependencies]

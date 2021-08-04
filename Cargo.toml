@@ -1,0 +1,22 @@
+cargo-features = ["edition2021"]
+
+[package]
+name = "bmw_coreutils"
+version = "0.1.0"
+edition = "2021"
+
+[patch.crates-io]
+bmwc = { path = "bmwc" }
+
+[features]
+# NOTE(bryce): I am leaving this off of being a default feature until we have done enough that this will even compile
+#default = ["use-bmwc"]
+use-bmwc = ["bmwc"]
+
+[dependencies]
+clap = "2.33.2"
+bmwc = { version = "0.1.0", optional = true }
+
+[[bin]]
+name = "echo"
+path = "src/echo/main.rs"

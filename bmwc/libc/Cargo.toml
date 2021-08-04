@@ -1,0 +1,12 @@
+cargo-features = ["edition2021"]
+
+[package]
+name = "bmwlibc"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "c"
+crate-type = ["staticlib"]
+
+[dependencies]
